@@ -104,7 +104,7 @@ button:disabled {
 }
 
 .chat__sidebar h3 {
-    color: #e6eaee;
+    color: #fff;
     margin: 10px 20px;
     text-align: left;
 }
@@ -170,11 +170,11 @@ button:disabled {
     -webkit-box-flex: 1;
     -ms-flex-positive: 1;
     flex-grow: 1;
-    outline: none;
+    outline-color:#fff;
 }
 
 .chat__footer input:focus {
-    border: 1px solid #e0245e;
+    outline-color:  #e0245e;
 }
 
 .chat__messages {
