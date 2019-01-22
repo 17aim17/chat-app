@@ -2,15 +2,28 @@ const socket = io(); // keep the connection open
 //  console.log(socket);
 socket.on('connect', function () {
     console.log('connected to Server')
-    // socket.emit('createMessage', {
-    //     form:'Ashish',
-    //     text:'hey , this is ashish'
-    // })
 })
+
 socket.on('disconnect', function () {
     console.log('disconnected to Server')
 })
 
-socket.on('newMessage', function (data) {
-    console.log('New Message', data)
+socket.on('newMessage', function (message) {
+    console.log('New Message', message)
+    const li = jQuery('<li></li>');
+    li.text(`${message.from} :  ${message.text}`)
+
+    jQuery('#messages').append(li)
+})
+
+
+$('#message-form').on('submit', function (e) {
+    e.preventDefault()
+
+    socket.emit('createMessage', {
+        from: 'Anonymous',
+        text: $('[name=message]').val()
+    }, function (msg) {
+        console.log('got the message', msg);
+    })
 })

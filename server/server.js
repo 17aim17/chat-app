@@ -20,8 +20,9 @@ io.on('connection', (socket) => { // same as public
 
     socket.broadcast.emit('newMessage', generateMessage('Admin', 'New User Joined'))
 
-    socket.on('createMessage', (message) => {
+    socket.on('createMessage', (message ,callback) => {
         io.emit('newMessage', generateMessage(message.from, message.text))
+        callback('This is From server');
         //broadcasting
         // socket.broadcast.emit('newMessage', {
         //         from: message.form,
