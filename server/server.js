@@ -6,7 +6,7 @@ const http = require('http')
 const app = express()
 const PORT = process.env.PORT || 3000
 const publicPath = path.join(__dirname, '..', 'public')
-const {generateMessage} = require('./utils/message')
+const {generateMessage ,generateLocationMessage} = require('./utils/message')
 const server = http.createServer(app)
 
 const io = socketIO(server) //configuring http to use socket io
@@ -22,13 +22,11 @@ io.on('connection', (socket) => { // same as public
 
     socket.on('createMessage', (message ,callback) => {
         io.emit('newMessage', generateMessage(message.from, message.text))
-        callback('This is From server');
-        //broadcasting
-        // socket.broadcast.emit('newMessage', {
-        //         from: message.form,
-        //         text: message.text,
-        //         createdAt:new Date().getTime()
-        // })
+        callback();
+    })
+
+    socket.on('createLocationMessage', (coords)=>{
+        io.emit('newLocationMessage', generateLocationMessage('Admin' ,coords.latitude , coords.longitude) )
     })
 
     socket.on('disconnect', (socket) => { // same as public
