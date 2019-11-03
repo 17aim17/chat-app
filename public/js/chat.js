@@ -17,6 +17,33 @@ const users_div = document.querySelector('#users_div');
 // Query String Options
 const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true })
 
+
+const autoScroll = () => {
+    // New Message Elements
+    const newMessage = msg_div.lastElementChild
+
+    // Height of new Message
+    const newMessageStyles = getComputedStyle(newMessage);
+    const newMessageMargin = parseInt(newMessageStyles.marginBottom)
+    const newMessageHeight = newMessage.offsetHeight + newMessageMargin
+
+    // get visible Height
+    const visibleHeight = msg_div.offsetHeight
+
+    // height of msg_div
+    const msg_div_height = msg_div.scrollHeight
+
+    // how far we are scrolled
+    const scrollOffset = msg_div.scrollTop + visibleHeight
+
+    if (msg_div_height - newMessageHeight <= scrollOffset) {
+        msg_div.scrollTop = msg_div.scrollHeight
+    }
+
+    console.log(newMessageMargin);
+
+}
+
 socket.on('newMessage', (data) => {
     console.log(data);
     const msg_template = document.querySelector('#msg_template').innerHTML;
@@ -28,6 +55,7 @@ socket.on('newMessage', (data) => {
     });
 
     msg_div.insertAdjacentHTML('beforeend', html);
+    autoScroll();
 })
 
 
@@ -87,6 +115,7 @@ socket.on('newLocationMessage', (data) => {
     });
 
     msg_div.insertAdjacentHTML('beforeend', html);
+    autoScroll();
 })
 
 socket.on('roomData', ({ room, users }) => {
